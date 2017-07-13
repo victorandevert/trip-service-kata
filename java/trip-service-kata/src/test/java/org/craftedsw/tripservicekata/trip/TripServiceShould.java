@@ -14,7 +14,7 @@ import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
 import org.craftedsw.tripservicekata.user.User;
 
 
-public class TripServiceTest {
+public class TripServiceShould {
 	private static final User REGISTERED_USER = new User();
 	private static final User ANOTHER_USER = new User();
 	private static final Trip BARCELONA = new Trip();
@@ -23,17 +23,17 @@ public class TripServiceTest {
 
 	@Before
 	public void initialize(){
-		tripService = new StubTripService();
+		tripService = new TestableTripService();
 	}
 	
 	@Test(expected=UserNotLoggedInException.class)
-	public void should_validate_logged_in_user() {		
+	public void validate_logged_in_user() {		
 		User user = new User();		
 		tripService.getTripsByUser(user);
 	}
 			
 	@Test
-	public void should_return_no_trips_when_logged_in_user_has_no_friends(){
+	public void return_no_trips_when_logged_in_user_has_no_friends(){
 		this.loggedInUser = REGISTERED_USER;
 		
 		User friend = new User();
@@ -45,7 +45,7 @@ public class TripServiceTest {
 		assertThat(trips.size(), is(0));
 	}
 
-	private class StubTripService extends TripService{
+	private class TestableTripService extends TripService{
 
 		@Override
 		protected User getLoggedUser() {
