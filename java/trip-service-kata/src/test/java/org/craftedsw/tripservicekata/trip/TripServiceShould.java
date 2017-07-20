@@ -5,9 +5,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.craftedsw.tripservicekata.exception.UserNotLoggedInException;
@@ -44,13 +41,32 @@ public class TripServiceShould {
 		List<Trip> trips = tripService.getTripsByUser(friend);
 		assertThat(trips.size(), is(0));
 	}
+	
+	@Test
+	public void return_trips_when_users_are_friends() {
+		this.loggedInUser = REGISTERED_USER;
+		
+		User user = new User();
+		user.addFriend(REGISTERED_USER);
+		user.addFriend(ANOTHER_USER);
+		user.addTrip(BARCELONA);
+		
+		List<Trip> trips = tripService.getTripsByUser(user);
+		assertThat(trips.size(), is(1));
+		
+	}	
 
 	private class TestableTripService extends TripService{
 
 		@Override
 		protected User getLoggedUser() {
 			return loggedInUser;
-		}	
+		}
+		
+		@Override
+		protected List<Trip> findTripsBy(User user) {
+			return user.trips();
+		}		
 	}
 }
 
