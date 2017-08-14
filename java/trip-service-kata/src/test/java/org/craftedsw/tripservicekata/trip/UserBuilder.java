@@ -4,8 +4,8 @@ import org.craftedsw.tripservicekata.user.User;
 
 public class UserBuilder {
 
-	private User[] friends;
-	private Trip[] trips;
+	private User[] friends = new User[]{};
+	private Trip[] trips = new Trip[]{};
 	
 	public static UserBuilder aUser() {
 		return new UserBuilder();
