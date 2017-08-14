@@ -7,6 +7,11 @@
 /java/trip-service-kata/.idea
 /java/trip-service-kata/*.iml
 
+# Ignore Gradle project-specific cache directory
+.gradle
+# Ignore Gradle build output directory
+build
+
 # C# Ignores
 _ReSharper.*/
 [Bb]in
