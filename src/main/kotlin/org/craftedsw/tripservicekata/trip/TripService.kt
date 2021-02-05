@@ -19,7 +19,7 @@ import java.util.*
                 }
             }
             if (isFriend) {
-                tripList = TripDAO.findTripsByUser(user)
+                tripList = getTripsFrom(user)
             }
             return tripList
         } else {
@@ -27,9 +27,10 @@ import java.util.*
         }
     }
 
-    protected open fun getLoggedUser(): User? {
+     protected open fun getTripsFrom(user: User) = TripDAO.findTripsByUser(user)
+
+     protected open fun getLoggedUser(): User? {
         val loggedUser: User? = UserSession.instance.loggedUser
         return loggedUser
-    }
-
+     }
 }
