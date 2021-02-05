@@ -10,15 +10,9 @@ import java.util.*
     fun getTripsByUser(user: User): List<Trip> {
         var tripList: List<Trip> = ArrayList<Trip>()
         val loggedUser: User? = getLoggedUser()
-        var isFriend: Boolean = false
         if (loggedUser != null) {
-            for (friend in user.friends) {
-                if (friend == loggedUser) {
-                    isFriend = true
-                    break
-                }
-            }
-            if (isFriend) {
+
+            if (user.isFriendWith(loggedUser)) {
                 tripList = getTripsFrom(user)
             }
             return tripList
