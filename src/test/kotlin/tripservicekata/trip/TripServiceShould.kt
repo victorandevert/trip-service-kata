@@ -5,7 +5,6 @@ import org.craftedsw.tripservicekata.exception.UserNotLoggedInException
 import org.craftedsw.tripservicekata.user.User
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.util.*
 
 class TripServiceShould {
 
@@ -25,39 +24,38 @@ class TripServiceShould {
     @Test
     fun `not return trips when the user is logged in and has no friends`() {
         val registeredUser = User()
-        val user = User()
         val tripService = TripServiceMock(registeredUser)
+        val user = User()
 
         val trips = tripService.getTripsByUser(user)
 
-        assertThat(trips).isEqualTo(ArrayList<Trip>())
+        assertThat(trips.size).isEqualTo(0)
     }
 
     @Test
     fun `return trips when the user is logged in and has friends`() {
         val registeredUser = User()
-        val user = User()
-        val expectedTrips = ArrayList<Trip>()
-        expectedTrips.add(Trip())
-        user.addTrip(Trip())
-        user.addFriend(registeredUser)
+        val user = createUserWithFriendAndTrip(registeredUser)
         val tripService = TripServiceMock(registeredUser)
 
         val trips = tripService.getTripsByUser(user)
 
 
-        assertThat(trips).isEqualTo(user.trips)
+        assertThat(trips.size).isEqualTo(1)
+    }
+
+    private fun createUserWithFriendAndTrip(registeredUser: User): User {
+        val user = User()
+        user.addTrip(Trip())
+        user.addFriend(registeredUser)
+        return user
     }
 
     class TripServiceMock(private val user: User?) : TripService() {
 
-        override fun getLoggedUser(): User? {
-            return user
-        }
+        override fun getLoggedUser(): User? = user
 
-        override fun getTripsFrom(user: User): List<Trip> {
-            return user.trips
-        }
+        override fun getTripsFrom(user: User): List<Trip> = user.trips
     }
 }
 

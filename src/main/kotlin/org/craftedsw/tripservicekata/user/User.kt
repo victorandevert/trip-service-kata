@@ -17,4 +17,5 @@ class User {
 
     fun addTrip(trip: Trip) = _trips.add(trip)
 
+    fun isFriendWith(loggedUser: User): Boolean = friends.contains(loggedUser)
 }

@@ -29,8 +29,5 @@ import java.util.*
 
      protected open fun getTripsFrom(user: User) = TripDAO.findTripsByUser(user)
 
-     protected open fun getLoggedUser(): User? {
-        val loggedUser: User? = UserSession.instance.loggedUser
-        return loggedUser
-     }
+     protected open fun getLoggedUser(): User? = UserSession.instance.loggedUser
 }
