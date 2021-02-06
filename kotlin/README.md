@@ -21,5 +21,5 @@ For future comparisons, when you are done, you can always check [TripService_Ori
 
 [1]: http://codurance.com/2011/07/16/testing-legacy-hard-wired-dependencies/ "Testing legacy code: Hard-wired dependencies blog post"
 [2]: https://github.com/sandromancuso/trip-service-kata/blob/master/kotlin/trip-service-kata/src/main/kotlin/org/craftedsw/tripservicekata/TripService_Original.kt "TripService_Original.kt"
-[3]: https://github.com/sandromancuso/trip-service-kata/blob/master/kotlin/trip-service-kata/src/test/kotlin/org/craftedsw/tripservicekata/TripServiceTest.kt "TripServiceTest.kt"
+[3]: https://github.com/sandromancuso/trip-service-kata/blob/master/kotlin/trip-service-kata/src/test/kotlin/org/craftedsw/tripservicekata/trip/TripServiceTest.kt "TripServiceTest.kt"
 [4]: https://github.com/sandromancuso/trip-service-kata/blob/master/kotlin/trip-service-kata/src/main/kotlin/org/craftedsw/tripservicekata/trip/TripService.kt "TripService.kt"
