@@ -1,5 +1,8 @@
 package org.craftedsw.tripservicekata.trip
 
+import arrow.core.Either
+import arrow.core.Either.Companion.left
+import arrow.core.Either.Companion.right
 import org.craftedsw.tripservicekata.exception.CollaboratorCallException
 import org.craftedsw.tripservicekata.user.User
 
@@ -12,7 +15,11 @@ class TripDAO {
 
     }
 
-    fun tripsByUser(user: User): List<Trip> {
-        return TripDAO.findTripsByUser(user)
+    fun tripsByUser(user: User): Either<CollaboratorCallException, List<Trip>> {
+        return try {
+            right(findTripsByUser(user))
+        }catch (e: Exception){
+            left(CollaboratorCallException(e.message,null))
+        }
     }
 }

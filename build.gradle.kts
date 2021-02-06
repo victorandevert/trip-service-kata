@@ -17,6 +17,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation("org.mockito:mockito-junit-jupiter:3.7.7")
+    implementation("io.arrow-kt:arrow-core:0.11.0")
 }
 
 tasks.test {

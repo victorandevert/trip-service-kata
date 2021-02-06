@@ -13,7 +13,10 @@ class TripService(val tripDAO: TripDAO) {
 
         return when {
             user.isFriendWith(loggedUser) -> {
-                getTripsFrom(user)
+                getTripsFrom(user).fold(
+                    {noTrips()},
+                    {it}
+                )
             }
             else -> noTrips()
         }

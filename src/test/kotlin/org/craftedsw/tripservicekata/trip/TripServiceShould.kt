@@ -1,6 +1,9 @@
 package org.craftedsw.tripservicekata.trip
 
+import arrow.core.Either.Companion.left
+import arrow.core.Either.Companion.right
 import org.assertj.core.api.Assertions.assertThat
+import org.craftedsw.tripservicekata.exception.CollaboratorCallException
 import org.craftedsw.tripservicekata.exception.UserNotLoggedInException
 import org.craftedsw.tripservicekata.user.User
 import org.junit.jupiter.api.Test
@@ -44,7 +47,7 @@ class TripServiceShould {
         val loggedUser = User()
         val user = createUserWithFriendAndTrip(loggedUser)
         val tripService = TripService(tripDAO)
-        given(tripDAO.tripsByUser(user)).willReturn(user.trips)
+        given(tripDAO.tripsByUser(user)).willReturn(right(user.trips))
 
         val trips = tripService.getTripsByUser(user, loggedUser)
 
@@ -52,10 +55,29 @@ class TripServiceShould {
         assertThat(trips.size).isEqualTo(1)
     }
 
-    private fun createUserWithFriendAndTrip(registeredUser: User): User {
+    @Test
+    fun `no return trips when the user is logged in and has friends and retreiving trips fails`() {
+        val loggedUser = User()
+        val user = createUserOnlyWithFriend(loggedUser)
+        val tripService = TripService(tripDAO)
+        given(tripDAO.tripsByUser(user)).willReturn(left(CollaboratorCallException("Unexpected error")))
+
+        val trips = tripService.getTripsByUser(user, loggedUser)
+
+
+        assertThat(trips.size).isEqualTo(0)
+    }
+
+    private fun createUserOnlyWithFriend(loggedUser: User): User {
+        val user = User()
+        user.addFriend(loggedUser)
+        return user
+    }
+
+    private fun createUserWithFriendAndTrip(loggedUser: User): User {
         val user = User()
         user.addTrip(Trip())
-        user.addFriend(registeredUser)
+        user.addFriend(loggedUser)
         return user
     }
 
