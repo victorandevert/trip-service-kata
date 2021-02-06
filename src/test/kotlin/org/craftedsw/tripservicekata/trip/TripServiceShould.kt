@@ -14,31 +14,31 @@ class TripServiceShould {
         val anonymousUser = null
         val user = User()
 
-        val tripService = TripServiceMock(anonymousUser)
+        val tripService = TripServiceMock()
 
         assertThrows<UserNotLoggedInException> {
-            tripService.getTripsByUser(user)
+            tripService.getTripsByUser(user, anonymousUser)
         }
     }
 
     @Test
     fun `not return trips when the user is logged in and has no friends`() {
-        val registeredUser = User()
-        val tripService = TripServiceMock(registeredUser)
+        val loggedU = User()
+        val tripService = TripServiceMock()
         val user = User()
 
-        val trips = tripService.getTripsByUser(user)
+        val trips = tripService.getTripsByUser(user, loggedU)
 
         assertThat(trips.size).isEqualTo(0)
     }
 
     @Test
     fun `return trips when the user is logged in and has friends`() {
-        val registeredUser = User()
-        val user = createUserWithFriendAndTrip(registeredUser)
-        val tripService = TripServiceMock(registeredUser)
+        val loggedUser = User()
+        val user = createUserWithFriendAndTrip(loggedUser)
+        val tripService = TripServiceMock()
 
-        val trips = tripService.getTripsByUser(user)
+        val trips = tripService.getTripsByUser(user, loggedUser)
 
 
         assertThat(trips.size).isEqualTo(1)
@@ -51,9 +51,7 @@ class TripServiceShould {
         return user
     }
 
-    class TripServiceMock(private val user: User?) : TripService() {
-
-        override fun getLoggedUser(): User? = user
+    class TripServiceMock : TripService() {
 
         override fun getTripsFrom(user: User): List<Trip> = user.trips
     }

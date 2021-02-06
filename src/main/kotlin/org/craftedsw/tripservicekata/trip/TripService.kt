@@ -7,13 +7,13 @@ import java.util.*
 
  open class TripService {
 
-    fun getTripsByUser(user: User): List<Trip> {
-        if (getLoggedUser() == null){
+    fun getTripsByUser(user: User, loggedUser: User?): List<Trip> {
+        if (loggedUser == null){
             throw UserNotLoggedInException()
         }
 
         return when {
-            user.isFriendWith(getLoggedUser()!!) -> {
+            user.isFriendWith(loggedUser) -> {
                 getTripsFrom(user)
             }
             else -> noTrips()
@@ -24,5 +24,4 @@ import java.util.*
 
      protected open fun getTripsFrom(user: User) = TripDAO.findTripsByUser(user)
 
-     protected open fun getLoggedUser(): User? = UserSession.instance.loggedUser
-}
+ }
