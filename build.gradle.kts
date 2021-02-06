@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.4.21"
 }
 
-group = "me.victor"
+group = "org.craftedsw"
 version = "1.0-SNAPSHOT"
 
 repositories {
