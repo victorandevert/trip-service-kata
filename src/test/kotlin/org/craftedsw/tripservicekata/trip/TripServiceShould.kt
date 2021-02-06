@@ -5,16 +5,23 @@ import org.craftedsw.tripservicekata.exception.UserNotLoggedInException
 import org.craftedsw.tripservicekata.user.User
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.BDDMockito.given
+import org.mockito.Mock
+import org.mockito.junit.jupiter.MockitoExtension
 
+@ExtendWith(MockitoExtension::class)
 class TripServiceShould {
 
+    @Mock
+    lateinit var tripDAO: TripDAO
 
     @Test
     fun `throw and exception when user is not logged in`() {
         val anonymousUser = null
         val user = User()
 
-        val tripService = TripServiceMock()
+        val tripService = TripService(tripDAO)
 
         assertThrows<UserNotLoggedInException> {
             tripService.getTripsByUser(user, anonymousUser)
@@ -24,8 +31,8 @@ class TripServiceShould {
     @Test
     fun `not return trips when the user is logged in and has no friends`() {
         val loggedU = User()
-        val tripService = TripServiceMock()
         val user = User()
+        val tripService = TripService(tripDAO)
 
         val trips = tripService.getTripsByUser(user, loggedU)
 
@@ -36,7 +43,8 @@ class TripServiceShould {
     fun `return trips when the user is logged in and has friends`() {
         val loggedUser = User()
         val user = createUserWithFriendAndTrip(loggedUser)
-        val tripService = TripServiceMock()
+        val tripService = TripService(tripDAO)
+        given(tripDAO.tripsByUser(user)).willReturn(user.trips)
 
         val trips = tripService.getTripsByUser(user, loggedUser)
 
@@ -51,9 +59,5 @@ class TripServiceShould {
         return user
     }
 
-    class TripServiceMock : TripService() {
-
-        override fun getTripsFrom(user: User): List<Trip> = user.trips
-    }
 }
 

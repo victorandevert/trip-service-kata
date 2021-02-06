@@ -9,6 +9,10 @@ class TripDAO {
         @JvmStatic fun findTripsByUser(user: User): List<Trip> {
             throw CollaboratorCallException("TripDAO should not be invoked on an unit test.")
         }
+
     }
 
+    fun tripsByUser(user: User): List<Trip> {
+        return TripDAO.findTripsByUser(user)
+    }
 }
