@@ -4,26 +4,32 @@ import org.craftedsw.tripservicekata.exception.UserNotLoggedInException
 import org.craftedsw.tripservicekata.user.User
 import java.util.*
 
-class TripService(val tripDAO: TripDAO) {
+class TripService(private val tripDAO: TripDAO) {
 
     fun getTripsByUser(user: User, loggedUser: User?): List<Trip> {
-        if (loggedUser == null){
-            throw UserNotLoggedInException()
-        }
 
+        return loggedUser?.let {
+            getTrips(user, it)
+        }?: shouldNotHappen()
+
+    }
+
+    private fun <T> shouldNotHappen(): T {
+        throw UserNotLoggedInException()
+    }
+
+    private fun getTrips(user: User, loggedUser: User): List<Trip> {
         return when {
             user.isFriendWith(loggedUser) -> {
-                getTripsFrom(user).fold(
-                    {noTrips()},
-                    {it}
+                tripDAO.tripsByUser(user).fold(
+                    { noTrips() },
+                    { it }
                 )
             }
             else -> noTrips()
         }
     }
 
-     private fun noTrips() = ArrayList<Trip>()
+    private fun noTrips() = ArrayList<Trip>()
 
-     private fun getTripsFrom(user: User) = tripDAO.tripsByUser(user)
-
- }
+}
