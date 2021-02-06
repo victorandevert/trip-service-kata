@@ -8,18 +8,19 @@ import java.util.*
  open class TripService {
 
     fun getTripsByUser(user: User): List<Trip> {
-        var tripList: List<Trip> = ArrayList<Trip>()
-        val loggedUser: User? = getLoggedUser()
-        if (loggedUser != null) {
-
-            if (user.isFriendWith(loggedUser)) {
-                tripList = getTripsFrom(user)
-            }
-            return tripList
-        } else {
+        if (getLoggedUser() == null){
             throw UserNotLoggedInException()
         }
+
+        return when {
+            user.isFriendWith(getLoggedUser()!!) -> {
+                getTripsFrom(user)
+            }
+            else -> noTrips()
+        }
     }
+
+     private fun noTrips() = ArrayList<Trip>()
 
      protected open fun getTripsFrom(user: User) = TripDAO.findTripsByUser(user)
 
